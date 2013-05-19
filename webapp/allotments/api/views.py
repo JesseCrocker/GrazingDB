@@ -13,6 +13,9 @@ def api_root(request, format=None):
     """
     return Response({
         'allotments': reverse('allotment-list', request=request),
+        'allotments with geometry': reverse('allotment-geo-list', request=request),
+        'allotment detail': reverse('allotment-detail', args=[1], request=request),
+        'allotment detail with geometry': reverse('allotment-detail', args=[1], request=request),
     })
 
 
@@ -28,7 +31,7 @@ class AllotmentDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     API endpoint that represents a single allotment.
     """
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     model = Allotment
     serializer_class = AllotmentSerializer
 
@@ -37,7 +40,6 @@ class GeoAllotmentList(generics.ListAPIView):
     """
     API endpoint that represents a list of allotments, with geometry
     """
-    permission_classes = (permissions.IsAuthenticated,)
     model = Allotment
     serializer_class = GeoAllotmentSerializer
 
@@ -46,6 +48,6 @@ class GeoAllotmentDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     API endpoint that represents a single allotment, with geometry
     """
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     model = Allotment
     serializer_class = GeoAllotmentSerializer

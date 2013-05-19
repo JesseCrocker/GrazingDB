@@ -8,7 +8,8 @@ class Allotment(models.Model):
     notes = models.TextField(blank=True, null=True)
     acres = models.FloatField(blank=True, null=True)
     state = models.CharField(max_length=2)
-
+    source = models.CharField(max_length=255)
+    
     objects = models.GeoManager()
 
     def as_dict(self):

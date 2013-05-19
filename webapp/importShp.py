@@ -19,12 +19,19 @@ def l_d(*parms):
     print (' '.join(itertools.imap(repr,parms)))
 
 
-def load_shp_file(filename, agency, state=None, name_field='ALLOT_NAME', acres_field='GIS_ACRES'):
+def load_shp_file(filename, agency, state=None, name_field='ALLOT_NAME', acres_field=None, 
+    source=None):
     from allotments.models import Allotment
 
     l_d("Opening shapefile %s" % filename)
     inputShp = DataSource(filename)
     l_d("fields: %s" % inputShp[0].fields)
+
+    if not acres_field:
+        if "ACRES" in inputShp[0].fields:
+            acres_field = "ACRES"
+        elif "GIS_ACRES" in inputShp[0].fields:
+            acres_field = "GIS_ACRES"
 
     create_count = 0
     update_count = 0
@@ -37,7 +44,6 @@ def load_shp_file(filename, agency, state=None, name_field='ALLOT_NAME', acres_f
             geom = feature.geom
             geom.transform(ct)
             name = feature.get(name_field)
-            acres = float(feature.get(acres_field))
 
             multi_poly = None
             if geom.geom_type == 'MultiPolygon':
@@ -49,10 +55,13 @@ def load_shp_file(filename, agency, state=None, name_field='ALLOT_NAME', acres_f
             
             #(new_allotment, created) = Allotment.objects.get_or_create(name=name, agency=agency, geometry=multi_poly.wkt)
             
-            new_allotment = Allotment(name=name, agency=agency)
+            new_allotment = Allotment(name=name, agency=agency,)
             new_allotment.geometry = multi_poly.wkt
-            new_allotment.acres = acres
+            if acres_field:
+                acres = float(feature.get(acres_field))
+                new_allotment.acres = acres
             new_allotment.state = state
+            new_allotment.source = source
 
             create_count += 1
             new_allotment.save()
@@ -68,9 +77,9 @@ if __name__=='__main__':
     parser.add_option("-a", "--agency", action="store", type="string", dest="agency")
     parser.add_option("-n", "--name-field", action="store", type="string", dest="nameField",
      default='ALLOT_NAME')
-    parser.add_option("-A", "--acres", action="store", type="string", dest="acresField",
-        default='GIS_ACRES')
+    parser.add_option("-A", "--acres", action="store", type="string", dest="acresField")
     parser.add_option("-s", "--state", action="store", type="string", dest="state")
+    parser.add_option("-S", "--source", action="store", type="string", dest="source")
 
     (options, args) = parser.parse_args()
 
@@ -89,5 +98,14 @@ if __name__=='__main__':
     setup_environ(settings)
 
     for filename in args:
+        source = options.source
+        if not source:
+            (dirName, lastComponent) = os.path.split(filename)
+            if dirName:
+                (parentDirName, dirName) = os.path.split(dirName)
+                source = "%s/%s" % (dirName, lastComponent)
+            else:
+                source = lastComponent
+
         load_shp_file(filename, options.agency, name_field=options.nameField, 
-            acres_field=options.acresField, state=options.state)
+            acres_field=options.acresField, state=options.state, source=source)

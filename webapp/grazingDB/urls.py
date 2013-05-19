@@ -19,10 +19,10 @@ urlpatterns += patterns('',
     url(r'^api/allotments$', AllotmentList.as_view(), name='allotment-list'),
     url(r'^api/allotments/(?P<pk>\d+)/$', AllotmentDetail.as_view(), name='allotment-detail'),
     url(r'^api/allotments/(?P<pk>\d+)$', AllotmentDetail.as_view(), name='allotment-detail'),
-    url(r'^api/geo/allotments/$', GeoAllotmentList.as_view(), name='allotment-list'),
-    url(r'^api/geo/allotments$', GeoAllotmentList.as_view(), name='allotment-list'),
-    url(r'^api/geo/allotments/(?P<pk>\d+)/$', GeoAllotmentDetail.as_view(), name='allotment-detail'),
-    url(r'^api/geo/allotments/(?P<pk>\d+)$', GeoAllotmentDetail.as_view(), name='allotment-detail'),
+    url(r'^api/geo/allotments/$', GeoAllotmentList.as_view(), name='allotment-geo-list'),
+    url(r'^api/geo/allotments$', GeoAllotmentList.as_view(), name='allotment-geo-list'),
+    url(r'^api/geo/allotments/(?P<pk>\d+)/$', GeoAllotmentDetail.as_view(), name='allotment-geo-detail'),
+    url(r'^api/geo/allotments/(?P<pk>\d+)$', GeoAllotmentDetail.as_view(), name='allotment-geo-detail'),
 )
 
 # Default login/logout views
