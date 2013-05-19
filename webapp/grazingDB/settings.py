@@ -69,7 +69,7 @@ MEDIA_URL = ''
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '^8sc6_vbgwbibn@yh*xk89#qmnj=_dl2v)zu7-l)4s82nn%m41'
 
-STATIC_ROOT = ""
+STATIC_ROOT = "/home/deploy/static/"
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = (
