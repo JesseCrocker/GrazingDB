@@ -45,7 +45,7 @@ def aptUpdate():
 
 #system setup
 def installSystemSoftware():
-    sudo("apt-get -q -y install git-core nginx python-pip python-dev python-flup duplicity s3cmd")
+    sudo("apt-get -q -y install git-core nginx python-pip python-dev python-flup duplicity s3cmd unzip")
 
 
 def postgres():
