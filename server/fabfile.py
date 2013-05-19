@@ -10,15 +10,18 @@ postgres_user = 'postgres'
 database = "grazing"
 git_repo = "git@github.com:JesseCrocker/GrazingDB.git"
 manage_command = "%s/GrazingDB/webapp/manage.py " % deploy_user_home
-
+app_dir = deploy_user_home + "/GrazingDB/"
 #commands to use
 def deploy():
     """ deploy a new server from scratch """
+    if not env.githubKey:
+        #crash if the key isnt specified, because we will need it later
+        return
     aptUpdate()
     installSystemSoftware()
     gitclone()
-    postgres()
     setupDeployUser()
+    postgres()
     installPythonRequirements()
     syncDB()
     upgradeDb()
@@ -42,7 +45,6 @@ def aptUpdate():
 
 #system setup
 def installSystemSoftware():
-    sudo("addgroup trusted")
     sudo("apt-get -q -y install git-core nginx python-pip python-dev python-flup duplicity s3cmd")
 
 
@@ -54,7 +56,7 @@ def postgres():
     sudo("apt-add-repository -y ppa:ubuntugis/ppa")
     sudo("apt-get -q -y update")
     sudo("apt-get -q -y install postgresql-9.1-postgis")
-    sudo("psql < /home/ubuntu/GaiaCloud/server/create_database_and_users.sql", user=postgres_user)
+    sudo("psql -f %s/server/createdb.sql" % app_dir, user=postgres_user)
     sudo("psql -d %s -c 'CREATE EXTENSION postgis;CREATE EXTENSION postgis_topology'" % database, user=postgres_user)
     #make sure the extension installed correctly
     sudo("psql -d %s -c 'SELECT name, default_version,installed_version FROM pg_available_extensions'" % database, user=postgres_user)
@@ -62,37 +64,38 @@ def postgres():
 
 def nginx():
     """Configure nginx and restart"""
-    with cd("%s/GrazingDB/server" % deploy_user_home):
-        sudo("ln -s nginx/nginx.conf /etc/nginx/nginx.conf")
-        sudo("ln -s nginx/default /etc/nginx/sites-available/default")
+    sudo("rm /etc/nginx/nginx.conf /etc/nginx/sites-available/default")
+    with cd("%s/server" % app_dir):
+        sudo("ln -s %s/server/nginx/nginx.conf /etc/nginx/nginx.conf" % app_dir)
+        sudo("ln -s %s/server/nginx/default /etc/nginx/sites-available/default" % app_dir)
     sudo("/etc/init.d/nginx restart")
 
 
 def gitclone():
     """clone gaia cloud repo to ubuntu user home dir"""
-    put(env.githubKey, "/home/ubuntu/")
+    put(env.githubKey, "/home/ubuntu/id_rsa")
     run("chmod 600 id_rsa")
     run("mv id_rsa .ssh")
-    put('known_hosts', ".ssh/")
+    #put('known_hosts', ".ssh/")
     run("git clone %s" % git_repo)
 
 
 def gitPull():
-    with cd("%s/GrazingDB/" % (deploy_user_home)):
+    with cd(app_dir):
         sudo("git pull", user=deploy_user)
 
 
 def gitCheckout():
-    with cd("%s/GrazingDB/" % (deploy_user_home)):
+    with cd(app_dir):
         sudo("git checkout %s" % (env.branch), user=deploy_user)
 
 
 #gaia cloud app setup
 def setupDeployUser():
     """Setup deploy user"""
-    sudo("useradd -d %s -m -s /bin/bash -G trusted %s" % (deploy_user_home, deploy_user))
+    sudo("useradd -d %s -m -s /bin/bash %s" % (deploy_user_home, deploy_user))
     sudo("cp -r GrazingDB/ %s" % deploy_user_home)
-    sudo("chown %s.%s -R %s/GaiaCloud/" % (deploy_user, deploy_user, deploy_user_home))
+    sudo("chown %s.%s -R %s" % (deploy_user, deploy_user, app_dir))
     #cp ssh keys to deploy user so it can pull
     sudo("mkdir %s/.ssh" % deploy_user_home, user=deploy_user)
     sudo("cp /home/ubuntu/.ssh/id_rsa /home/ubuntu/.ssh/known_hosts %s/.ssh" % (deploy_user_home))
@@ -108,7 +111,7 @@ def collectStatic():
 
 
 def restart():
-    sudo("%s/GrazingDB/server/restart.sh" % (deploy_user_home), user=deploy_user)
+    sudo("%s/server/restart.sh" % (app_dir), user=deploy_user)
 
 
 def upgradeDb():
@@ -116,4 +119,4 @@ def upgradeDb():
 
 
 def installPythonRequirements():
-    sudo("pip install -r /home/gaia/GaiaCloud/gaia/requirements.txt")
+    sudo("pip -q install -r %s/requirements.txt" % app_dir)
