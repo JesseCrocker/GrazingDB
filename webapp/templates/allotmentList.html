@@ -44,7 +44,11 @@
             <td>{[{item.state}]}</td>
             <td><a href="/api/allotments/{[{item.id}]}/">{[{item.name}]}</a></td>
             <td>{[{item.acres}]}</td>
-            <td><input ng-model="involved" type="checkbox" ng-checked="item.involved" ng-click="toggleInvolved($event,item)" /></td>
+            {% if user.is_authenticated %} 
+                <td><input ng-model="involved" type="checkbox" ng-checked="item.involved" ng-click="toggleInvolved($event,item)" /></td>
+            {% else %}
+                <td>{[{item.involved}]}</td>
+            {% endif %} 
             <td>{[{item.source}]}</td>
             <td>{[{item.notes}]}</td>
         </tr>
