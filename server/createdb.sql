@@ -1,0 +1,3 @@
+CREATE DATABASE grazing;
+CREATE USER grazing WITH PASSWORD 'grazing';
+GRANT ALL PRIVILEGES ON DATABASE grazing to grazing;

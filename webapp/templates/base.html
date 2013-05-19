@@ -1,0 +1,17 @@
+<!DOCTYPE html SYSTEM "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+<html ng-app="grazingdb">
+    <head>
+        <title>
+            {% block title %}{% endblock %}
+        </title>
+        {% block jsContent %}{% endblock %}
+        <script type="text/javascript" language="javascript" src="/static/js/angular.min.js"></script>
+        <script type="text/javascript" language="javascript" src="/static/js/angular-resource.min.js"></script>
+        <script type="text/javascript" language="javascript" src="/static/js/app.js"></script>
+    </head>
+    <body>
+        {% block head %}{% endblock %}
+
+        {% block content %} {% endblock %}
+    </body>
+</html>

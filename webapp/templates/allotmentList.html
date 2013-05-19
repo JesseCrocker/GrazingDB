@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Allotment List{% endblock %}
+
+{% block jsContent %}
+{% endblock %}
+
+{% block content %}
+<table id="itemList" ng-controller="ListController">
+    <thead>
+        <tr>
+            <th><a href="" ng-click="predicate = 'agency'; reverse=!reverse">Agency</a></th>
+            <th><a href="" ng-click="predicate = 'state'; reverse=!reverse">State</a></th>
+            <th><a href="" ng-click="predicate = 'name'; reverse=!reverse">Name</a></th>
+            <th><a href="" ng-click="predicate = 'acres'; reverse=!reverse">Acres</a></th>
+            <th><a href="" ng-click="predicate = 'involved'; reverse=!reverse">Involved</a></th>
+            <th>notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in items | orderBy:predicate:reverse">
+            <td>{[{item.agency}]}</td>
+            <td>{[{item.state}]}</td>
+            <td><a href="/api/allotments/{[{item.id}]}/">{[{item.name}]}</a></td>
+            <td>{[{item.acres}]}</td>
+            <td><input ng-model="involved" type="checkbox" ng-checked="item.involved" ng-click="toggleInvolved($event,item)"/><td>
+            <td>{[{item.notes}]}</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

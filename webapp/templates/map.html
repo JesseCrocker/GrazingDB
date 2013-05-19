@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Allotment Map{% endblock %}
+
+{% block jsContent %}
+<style>
+    html, body{
+        height:100%;
+    }
+</style>
+    <link rel="stylesheet" href="/static/css/openlayers.css" type="text/css" />
+    <script type="text/javascript" language="javascript" src="/static/js/openLayers.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="map" style="width:100%;height:90%;border:1px solid black;" ng-controller="MapController"></div>
+{% endblock %}
