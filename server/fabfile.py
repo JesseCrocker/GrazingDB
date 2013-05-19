@@ -72,7 +72,7 @@ def nginx():
 
 
 def gitclone():
-    """clone gaia cloud repo to ubuntu user home dir"""
+    """clone repo to ubuntu user home dir"""
     put(env.githubKey, "/home/ubuntu/id_rsa")
     run("chmod 600 id_rsa")
     run("mv id_rsa .ssh")
@@ -90,7 +90,6 @@ def gitCheckout():
         sudo("git checkout %s" % (env.branch), user=deploy_user)
 
 
-#gaia cloud app setup
 def setupDeployUser():
     """Setup deploy user"""
     sudo("useradd -d %s -m -s /bin/bash %s" % (deploy_user_home, deploy_user))
