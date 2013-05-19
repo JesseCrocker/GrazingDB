@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'south',
     'allotments',
+    'gunicorn',
 )
 
 
