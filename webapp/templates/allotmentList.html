@@ -3,6 +3,26 @@
 {% block title %}Allotment List{% endblock %}
 
 {% block jsContent %}
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+    th {
+        background-color: #006196;
+        color: white;
+    }
+    th > a:link, th > a:visited {
+        color: white;
+    }
+    td > a:link, td > a:visited {
+        color: black;
+    }
+    tr:nth-child(odd) { background-color:white; }
+    tr:nth-child(even) { background-color:#CDE0EB; }
+    table {
+        border-collapse:collapse;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -14,6 +34,7 @@
             <th><a href="" ng-click="predicate = 'name'; reverse=!reverse">Name</a></th>
             <th><a href="" ng-click="predicate = 'acres'; reverse=!reverse">Acres</a></th>
             <th><a href="" ng-click="predicate = 'involved'; reverse=!reverse">Involved</a></th>
+            <th><a href="" ng-click="predicate = 'source'; reverse=!reverse">Source</a></th>
             <th>notes</th>
         </tr>
     </thead>
@@ -23,7 +44,8 @@
             <td>{[{item.state}]}</td>
             <td><a href="/api/allotments/{[{item.id}]}/">{[{item.name}]}</a></td>
             <td>{[{item.acres}]}</td>
-            <td><input ng-model="involved" type="checkbox" ng-checked="item.involved" ng-click="toggleInvolved($event,item)"/><td>
+            <td><input ng-model="involved" type="checkbox" ng-checked="item.involved" ng-click="toggleInvolved($event,item)" /></td>
+            <td>{[{item.source}]}</td>
             <td>{[{item.notes}]}</td>
         </tr>
     </tbody>

@@ -10,6 +10,11 @@
         <script type="text/javascript" language="javascript" src="/static/js/app.js"></script>
     </head>
     <body>
+        <div class="account">
+            {% if user.is_authenticated %} 
+                <a href="/api-auth/logout/?next=">Logout</a></li> 
+            {% else %} <a href="/api-auth/login/?next={{ request.path }}">Login</a> {% endif %} 
+        </div>
         {% block head %}{% endblock %}
 
         {% block content %} {% endblock %}
