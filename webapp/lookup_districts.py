@@ -12,5 +12,6 @@ from allotments.models import Allotment
 for allotment in Allotment.objects.all():
     district = allotment.lookup_district()
     print("%s in %s" % (allotment.name, district))
-    allotment.field_office=district
-    allotment.save()
+    if district:
+        allotment.field_office=district
+        allotment.save()
