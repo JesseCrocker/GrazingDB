@@ -73,13 +73,13 @@ function MapController($scope, $resource) {
         involved_style = { 
                 'strokeWidth': 2,
                 'strokeColor': 'green',
-                //'fillColor': '#E6DB74',
+                'fillColor': '#4BFF03',
                 'fillOpacity': 0.1,
         };
         non_involved_style = { 
                 'strokeWidth': 2,
                 'strokeColor': '#ff0000',
-                //'fillColor': '#E6DB74',
+                'fillColor': '#FF0303',
                 'fillOpacity': 0.1,
         };
         var iconSize = new OpenLayers.Size(21,25);
