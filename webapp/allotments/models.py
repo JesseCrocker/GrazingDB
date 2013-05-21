@@ -9,6 +9,7 @@ class Allotment(models.Model):
     acres = models.FloatField(blank=True, null=True)
     state = models.CharField(max_length=2)
     source = models.CharField(max_length=255)
+    field_office = models.CharField(max_length=255, blank=True, null=True)
     
     objects = models.GeoManager()
 
