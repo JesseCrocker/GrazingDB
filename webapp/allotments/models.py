@@ -12,6 +12,9 @@ class Allotment(models.Model):
     
     objects = models.GeoManager()
 
+    def simplified_geometry(self):
+        return self.geometry.simplify(tolerance=0.001, preserve_topology=True).wkt
+
     def as_dict(self):
         return {
             "id": self.id,
