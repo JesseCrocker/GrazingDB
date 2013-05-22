@@ -10,6 +10,9 @@ setup_environ(settings)
 from allotments.models import Allotment
 
 for allotment in Allotment.objects.all():
+    if allotment.field_office and len(allotment.field_office):
+        continue
+
     district = allotment.lookup_district()
     print("%s in %s" % (allotment.name, district))
     if district:

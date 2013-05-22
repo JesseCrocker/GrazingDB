@@ -19,7 +19,8 @@ class Allotment(models.Model):
 
     def lookup_district(self):
         try:
-            districts = District.objects.filter(agency=self.agency, geometry__intersects=self.geometry).all()[:1]
+            simplifed_geom = self.geometry.simplify(tolerance=0.001, preserve_topology=True)
+            districts = District.objects.filter(agency=self.agency, geometry__intersects=simplifed_geom).all()[:1]
             if len(districts):
                 district = districts[0]
                 return district.name
