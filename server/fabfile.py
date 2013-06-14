@@ -3,6 +3,7 @@ from fabric.api import *
 from fabric.contrib.console import confirm
 from fabric.operations import run, put
 
+env.use_ssh_config = True
 env.user = 'ubuntu'
 deploy_user = 'deploy'
 deploy_user_home = '/home/deploy'
