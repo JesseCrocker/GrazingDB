@@ -16,6 +16,7 @@ urlpatterns += patterns('allotments.api.views',
 #api url patterns, make them work with or without a trailing /
 urlpatterns += patterns('',
     url(r'^api/allotments/$', AllotmentList.as_view(), name='allotment-list'),
+    url(r'^api/allotments/$', AllotmentList.as_view(), name='allotment-list'),
     url(r'^api/allotments$', AllotmentList.as_view(), name='allotment-list'),
     url(r'^api/allotments/(?P<pk>\d+)/$', AllotmentDetail.as_view(), name='allotment-detail'),
     url(r'^api/allotments/(?P<pk>\d+)$', AllotmentDetail.as_view(), name='allotment-detail'),
@@ -31,6 +32,7 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('allotments.views',
-    url(r'list/$', 'list'),
-    url(r'map/$', 'mapView'),
+    url(r'^list/$', 'list'),
+    url(r'^map/$', 'mapView'),
+    url(r'^allotments.shp$', 'ShapeDump')
 )

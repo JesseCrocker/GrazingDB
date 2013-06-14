@@ -128,6 +128,7 @@ INSTALLED_APPS = (
     'south',
     'allotments',
     'gunicorn',
+    'shapes',
 )
 
 
