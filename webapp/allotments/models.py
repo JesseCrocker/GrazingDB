@@ -4,7 +4,7 @@ import logging
 class Allotment(models.Model):
     name = models.CharField(max_length=255)
     agency = models.CharField(max_length=255)
-    geometry = models.MultiPolygonField(blank=True, null=True, geography=True)
+    geometry = models.MultiPolygonField(blank=True, null=True)
     involved = models.BooleanField(default=False)
     notes = models.TextField(blank=True, null=True)
     acres = models.FloatField(blank=True, null=True)
