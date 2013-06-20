@@ -38,9 +38,42 @@
             <th><a href="" ng-click="predicate = 'source'; reverse=!reverse">Source</a></th>
             <th>notes</th>
         </tr>
+        <tr>
+            <form>
+                <th><select ng-model="search.agency">
+                    <option value="">All</option>
+                    <option ng-repeat="item in items | unique:'agency'" value="{[{item.agency}]}">{[{item.agency}]}</option>
+                </select></th>
+                <th><select ng-model="search.state">
+                    <option value="">All</option>
+                    <option ng-repeat="item in items | unique:'state'" value="{[{item.state}]}">{[{item.state}]}</option>
+                </select></th>
+                <th></th>
+                <th></th>
+                <th>
+<select ng-model="search.involved">
+                        <option value="">All</option>
+                        <option ng-repeat="item in items | unique:'involved'" value="{[{item.involved}]}">{[{item.involved}]}</option>
+                    </select>
+                </th>
+                <th>
+                    <select ng-model="search.field_office">
+                        <option value="">All</option>
+                        <option ng-repeat="item in items | unique:'field_office'" value="{[{item.field_office}]}">{[{item.field_office}]}</option>
+                    </select>
+                </th>
+                <th>
+                    <select ng-model="search.source">
+                    <option value="">All</option>
+                    <option ng-repeat="item in items | unique:'source'" value="{[{item.source}]}">{[{item.source}]}</option>
+                </select>
+                </th>
+                <th><!--{[{search | json}]}--></th>
+            </form>
+        </tr>
     </thead>
-    <tbody>
-        <tr ng-repeat="item in items | orderBy:predicate:reverse">
+    <tbody><!--  orderBy:predicate:reverse | -->
+        <tr ng-repeat="item in items | filter:search">
             <td>{[{item.agency}]}</td>
             <td>{[{item.state}]}</td>
             <td><a href="/api/allotments/{[{item.id}]}/">{[{item.name}]}</a></td>
@@ -55,5 +88,5 @@
             <td>{[{item.notes}]}</td>
         </tr>
     </tbody>
-</table>
+    </table>
 {% endblock %}

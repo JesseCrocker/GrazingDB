@@ -1,4 +1,4 @@
-var app = angular.module('grazingdb', [ 'ngResource' ]);
+var app = angular.module('grazingdb', [ 'ngResource', 'ui']);
 
 app.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('{[{');
@@ -7,7 +7,7 @@ app.config(function($interpolateProvider) {
 
 function ListController($scope, $resource) {
     $scope.predicate = 'name';
-    
+
     var Allotment = $resource('/api/allotments/:uid',
      {uid:'@uid'},
      {
@@ -28,7 +28,7 @@ function ListController($scope, $resource) {
 
 function MapController($scope, $resource) {
     $scope.predicate = 'name';
-    
+
     var Allotment = $resource('/api/geo/allotments/:uid',
      {uid:'@uid'},
      {
