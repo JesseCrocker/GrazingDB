@@ -72,8 +72,8 @@
             </form>
         </tr>
     </thead>
-    <tbody><!--  orderBy:predicate:reverse | -->
-        <tr ng-repeat="item in items | filter:search">
+    <tbody>
+        <tr ng-repeat="item in items | filter:search | orderBy:predicate:reverse">
             <td>{[{item.agency}]}</td>
             <td>{[{item.state}]}</td>
             <td><a href="/api/allotments/{[{item.id}]}/">{[{item.name}]}</a></td>
