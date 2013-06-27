@@ -9,9 +9,10 @@ from shapes.views import ShpResponder
 
 from models import Allotment
 
-def list(request):
+def list(request, state='AZ'):
+    state = state.upper()
     return render_to_response('allotmentList.html', 
-        {} , context_instance=RequestContext(request))
+        {'STATE':state} , context_instance=RequestContext(request))
 
 def mapView(request):
     return render_to_response('map.html', 

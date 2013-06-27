@@ -8,14 +8,15 @@ app.config(function($interpolateProvider) {
 function ListController($scope, $resource) {
     $scope.predicate = 'name';
 
-    var Allotment = $resource('/api/allotments/:uid',
-     {uid:'@uid'},
+    var Allotment = $resource('/api/allotments/:uid/?state=:state',
+     {uid:'@uid', state:'@state'},
      {
         update: { method: 'PUT', params:{uid:'@uid'} },
-        get: { method: "GET" } }
-     );
+        'query':  {method:'GET', isArray:true},
+        get: { method: "GET"} 
+    });
 
-    Allotment.query({}, function (response, headers) {
+    Allotment.query({state:window.state}, function (response, headers) {
            $scope.items = response; 
     });
 

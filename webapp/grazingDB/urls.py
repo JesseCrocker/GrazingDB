@@ -33,6 +33,7 @@ urlpatterns += patterns('',
 
 urlpatterns += patterns('allotments.views',
     url(r'^list/$', 'list'),
+    url(r'^list/(?P<state>\w+)', 'list'),
     url(r'^map/$', 'mapView'),
     url(r'^allotments.shp$', 'ShapeDump')
 )

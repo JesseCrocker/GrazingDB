@@ -26,6 +26,13 @@ class AllotmentList(generics.ListAPIView):
     model = Allotment
     serializer_class = AllotmentSerializer
 
+    def get_queryset(self):
+        state = self.request.GET.get('state', None)
+        if state:
+            return Allotment.objects.filter(state=state)
+        else:
+            return Allotment.objects.all()
+
 
 class AllotmentDetail(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -42,6 +49,13 @@ class GeoAllotmentList(generics.ListAPIView):
     """
     model = Allotment
     serializer_class = GeoAllotmentSerializer
+
+    def get_queryset(self):
+        state = self.request.GET.get('state', None)
+        if state:
+            return Allotment.objects.filter(state=state)
+        else:
+            return Allotment.objects.all()
 
 
 class GeoAllotmentDetail(generics.RetrieveUpdateDestroyAPIView):
