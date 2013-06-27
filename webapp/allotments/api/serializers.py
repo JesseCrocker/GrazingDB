@@ -13,6 +13,7 @@ class GeoAllotmentSerializer(AllotmentSerializer):
     geometry = serializers.SerializerMethodField('simplified_geometry')
 
     class Meta:
+        model = Allotment
         exclude = ()
 
     def simplified_geometry(self, obj):

@@ -20,7 +20,7 @@ def l_d(*parms):
 
 
 def load_shp_file(filename, agency, state=None, name_field='ALLOT_NAME', acres_field=None, 
-    source=None):
+    state_field=None, source=None):
     from allotments.models import Allotment
 
     l_d("Opening shapefile %s" % filename)
@@ -60,7 +60,10 @@ def load_shp_file(filename, agency, state=None, name_field='ALLOT_NAME', acres_f
             if acres_field:
                 acres = float(feature.get(acres_field))
                 new_allotment.acres = acres
-            new_allotment.state = state
+            if state_field:
+                new_allotment.state = feature.get(state_field)
+            elif state:
+                new_allotment.state = state
             new_allotment.source = source
 
             create_count += 1
@@ -76,9 +79,10 @@ if __name__=='__main__':
     parser.add_option("-q", "--quiet", action="store_true", dest="quiet")
     parser.add_option("-a", "--agency", action="store", type="string", dest="agency")
     parser.add_option("-n", "--name-field", action="store", type="string", dest="nameField",
-     default='ALLOT_NAME')
+     default='UNIT_NAME')
     parser.add_option("-A", "--acres", action="store", type="string", dest="acresField")
     parser.add_option("-s", "--state", action="store", type="string", dest="state")
+    parser.add_option("-F", "--state-field", action="store", type="string", dest="stateField")
     parser.add_option("-S", "--source", action="store", type="string", dest="source")
 
     (options, args) = parser.parse_args()
@@ -91,8 +95,8 @@ if __name__=='__main__':
         print "agency is required(ex: -a BLM)"
         sys.exit()
 
-    if not options.state:
-        print "state is required(ex: -s AZ)"
+    if not options.state and not options.stateField:
+        print "state or state field is required(ex: -s AZ)"
         sys.exit()
 
     setup_environ(settings)
@@ -108,4 +112,5 @@ if __name__=='__main__':
                 source = lastComponent
 
         load_shp_file(filename, options.agency, name_field=options.nameField, 
-            acres_field=options.acresField, state=options.state, source=source)
+            acres_field=options.acresField, state=options.state, state_field=options.stateField,
+             source=source)
